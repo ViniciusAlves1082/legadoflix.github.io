@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legadoflix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .search-container {
+            position: relative;
+            display: inline-block;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .clear-button {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: none;
+        }
+        button {
+            padding: 10px 15px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Buscar Filme...</h1>
+    <form id="searchForm" onsubmit="searchMovies(event)">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Digite o nome do filme..." required oninput="toggleClearButton()">
+            <button type="button" class="clear-button" onclick="clearSearchInput()">x</button>
+        </div>
+        <button type="submit">Buscar</button>
+    </form>
+    <div class="results" id="results"></div>
+
+    <script>
+        function toggleClearButton() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.querySelector('.clear-button');
+            clearButton.style.display = searchInput.value ? 'inline' : 'none';
+        }
+
+        function clearSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = '';
+            toggleClearButton();
+            searchInput.focus();
+        }
+
+        function searchMovies(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            // Dados de exemplo - substitua isso pelos dados reais do seu site
+            const movies = [
+                { title: 'A Guerra dos Tronos: House of the Dragon', url: 'https://legadoflix8.webnode.page/resultado/a-guerra-dos-tronos-house-of-the-dragon/' },
+                { title: 'Noryang: Deadly Sea', url: 'https://legadoflix8.webnode.page/resultado/noryang-deadly-sea/' },
+                // Adicione mais filmes aqui
+            ];
+
+            const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(searchInput));
+
+            if (filteredMovies.length > 0) {
+                filteredMovies.forEach(movie => {
+                    const movieItem = document.createElement('div');
+                    movieItem.classList.add('result-item');
+                    movieItem.innerHTML = `<a href="${movie.url}" target="_blank">${movie.title}</a>`;
+                    resultsContainer.appendChild(movieItem);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>Nenhum filme encontrado.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
